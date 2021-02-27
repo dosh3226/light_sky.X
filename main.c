@@ -48,7 +48,29 @@
  */
 
 #define LED0        LATFbits.LATF3
-#define SW0         PORTBbits.RB4
+//#define SW0         PORTBbits.RB4
+#define SW0         LATBbits.LATB4
+
+/* trying to sort out a timer function 
+ * copying this from the demo file 
+ */
+/**
+ * @brief This clears IF flag, stops, reloads, and starts TMR1
+ * @return None
+ * @param [in] 16-bit TMR1H:L value
+ * @example TMR1_StopAndStartTimer(DELAY_3s);
+ */
+inline void TMR1_StopAndStartTimer(uint16_t delay)
+{
+    // Clearing IF flag.
+    PIR3bits.TMR1IF = 0;
+    
+    // Stop, reload, start
+    TMR1_StopTimer();
+    TMR1_WriteTimer(delay);
+    TMR1_StartTimer();
+}
+
 
 void main(void)
 {
@@ -67,11 +89,17 @@ void main(void)
 
     TRISFbits.TRISF3 = 0;   //LED0 as output
     TRISBbits.TRISB4 = 1;   //SW0 as input
-
+    LED0 = 1; // LED0 off
+    
     while (1)
     {
         // Add your application code
-        LED0 = !SW0;    //LED1 turns on when SW0 is pressed        
+        //LED0 = 0;    //LED1 turns on when SW0 is pressed
+        if(SW0 == 1)
+        {
+            LED0 = 0;    //LED1 turns on when SW0 is pressed
+        }
+        //LED0 = !SW0;    //LED1 turns on when SW1 is pressed
     }
 }
 /**

@@ -27,7 +27,7 @@
 [v ___lmul __lmul `(ul  1 e 4 0 ]
 "91 D:\Program Files\Microchip\xc8\v2.31\pic\sources\c99\common\Umul64.c
 [v ___omul __omul `(uo  1 e 8 0 ]
-"53 D:\Users\Daf\MPLABXProjects\light_sky.X\main.c
+"54 D:\Users\Daf\MPLABXProjects\light_sky.X\main.c
 [v _main main `(v  1 e 1 0 ]
 "50 D:\Users\Daf\MPLABXProjects\light_sky.X\mcc_generated_files/mcc.c
 [v _SYSTEM_Initialize SYSTEM_Initialize `(v  1 e 1 0 ]
@@ -137,6 +137,20 @@
 [v _LATA LATA `VEuc  1 e 1 @1214 ]
 "47440
 [v _LATB LATB `VEuc  1 e 1 @1215 ]
+[s S165 . 1 `uc 1 LATB0 1 0 :1:0 
+`uc 1 LATB1 1 0 :1:1 
+`uc 1 LATB2 1 0 :1:2 
+`uc 1 LATB3 1 0 :1:3 
+`uc 1 LATB4 1 0 :1:4 
+`uc 1 LATB5 1 0 :1:5 
+`uc 1 LATB6 1 0 :1:6 
+`uc 1 LATB7 1 0 :1:7 
+]
+"47457
+[u S174 . 1 `S165 1 . 1 0 ]
+"47457
+"47457
+[v _LATBbits LATBbits `VES174  1 e 1 @1215 ]
 "47502
 [v _LATC LATC `VEuc  1 e 1 @1216 ]
 "47564
@@ -145,7 +159,7 @@
 [v _LATE LATE `VEuc  1 e 1 @1218 ]
 "47658
 [v _LATF LATF `VEuc  1 e 1 @1219 ]
-[s S28 . 1 `uc 1 LATF0 1 0 :1:0 
+[s S144 . 1 `uc 1 LATF0 1 0 :1:0 
 `uc 1 LATF1 1 0 :1:1 
 `uc 1 LATF2 1 0 :1:2 
 `uc 1 LATF3 1 0 :1:3 
@@ -155,14 +169,28 @@
 `uc 1 LATF7 1 0 :1:7 
 ]
 "47675
-[u S37 . 1 `S28 1 . 1 0 ]
+[u S153 . 1 `S144 1 . 1 0 ]
 "47675
 "47675
-[v _LATFbits LATFbits `VES37  1 e 1 @1219 ]
+[v _LATFbits LATFbits `VES153  1 e 1 @1219 ]
 "47720
 [v _TRISA TRISA `VEuc  1 e 1 @1222 ]
 "47782
 [v _TRISB TRISB `VEuc  1 e 1 @1223 ]
+[s S123 . 1 `uc 1 TRISB0 1 0 :1:0 
+`uc 1 TRISB1 1 0 :1:1 
+`uc 1 TRISB2 1 0 :1:2 
+`uc 1 TRISB3 1 0 :1:3 
+`uc 1 TRISB4 1 0 :1:4 
+`uc 1 TRISB5 1 0 :1:5 
+`uc 1 TRISB6 1 0 :1:6 
+`uc 1 TRISB7 1 0 :1:7 
+]
+"47799
+[u S132 . 1 `S123 1 . 1 0 ]
+"47799
+"47799
+[v _TRISBbits TRISBbits `VES132  1 e 1 @1223 ]
 "47844
 [v _TRISC TRISC `VEuc  1 e 1 @1224 ]
 "47906
@@ -171,10 +199,24 @@
 [v _TRISE TRISE `VEuc  1 e 1 @1226 ]
 "48000
 [v _TRISF TRISF `VEuc  1 e 1 @1227 ]
-"53 D:\Users\Daf\MPLABXProjects\light_sky.X\main.c
+[s S102 . 1 `uc 1 TRISF0 1 0 :1:0 
+`uc 1 TRISF1 1 0 :1:1 
+`uc 1 TRISF2 1 0 :1:2 
+`uc 1 TRISF3 1 0 :1:3 
+`uc 1 TRISF4 1 0 :1:4 
+`uc 1 TRISF5 1 0 :1:5 
+`uc 1 TRISF6 1 0 :1:6 
+`uc 1 TRISF7 1 0 :1:7 
+]
+"48017
+[u S111 . 1 `S102 1 . 1 0 ]
+"48017
+"48017
+[v _TRISFbits TRISFbits `VES111  1 e 1 @1227 ]
+"54 D:\Users\Daf\MPLABXProjects\light_sky.X\main.c
 [v _main main `(v  1 e 1 0 ]
 {
-"76
+"83
 } 0
 "50 D:\Users\Daf\MPLABXProjects\light_sky.X\mcc_generated_files/mcc.c
 [v _SYSTEM_Initialize SYSTEM_Initialize `(v  1 e 1 0 ]

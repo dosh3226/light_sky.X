@@ -28592,9 +28592,9 @@ unsigned char __t3rd16on(void);
 # 50 "./mcc_generated_files/mcc.h" 2
 
 # 1 "./mcc_generated_files/pin_manager.h" 1
-# 78 "./mcc_generated_files/pin_manager.h"
+# 118 "./mcc_generated_files/pin_manager.h"
 void PIN_MANAGER_Initialize (void);
-# 90 "./mcc_generated_files/pin_manager.h"
+# 130 "./mcc_generated_files/pin_manager.h"
 void PIN_MANAGER_IOC(void);
 # 51 "./mcc_generated_files/mcc.h" 2
 
@@ -28641,15 +28641,24 @@ void OSCILLATOR_Initialize(void);
 # 95 "./mcc_generated_files/mcc.h"
 void PMD_Initialize(void);
 # 44 "main.c" 2
-# 53 "main.c"
+# 54 "main.c"
 void main(void)
 {
 
     SYSTEM_Initialize();
-# 71 "main.c"
+# 69 "main.c"
+    TRISFbits.TRISF3 = 0;
+    TRISBbits.TRISB4 = 1;
+    LATFbits.LATF3 = 1;
+
     while (1)
     {
 
-        LATFbits.LATF3 = 1;
+
+        if(LATBbits.LATB4 == 1)
+        {
+            LATFbits.LATF3 = 0;
+        }
+
     }
 }
