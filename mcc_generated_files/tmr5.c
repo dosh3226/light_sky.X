@@ -55,6 +55,7 @@
   Section: Global Variables Definitions
 */
 volatile uint16_t timer5ReloadVal;
+void (*TMR5_InterruptHandler)(void);
 
 /**
   Section: TMR5 APIs
@@ -70,23 +71,29 @@ void TMR5_Initialize(void)
     //GSS T5G_pin; 
     T5GATE = 0x00;
 
-    //CS T5CKIPPS; 
-    T5CLK = 0x00;
+    //CS HFINTOSC; 
+    T5CLK = 0x03;
 
-    //TMR5H 224; 
-    TMR5H = 0xE0;
+    //TMR5H 76; 
+    TMR5H = 0x4C;
 
-    //TMR5L 0; 
-    TMR5L = 0x00;
+    //TMR5L 80; 
+    TMR5L = 0x50;
 
-    // Clearing IF flag.
+    // Clearing IF flag before enabling the interrupt.
     PIR8bits.TMR5IF = 0;
-	
+
     // Load the TMR value to reload variable
     timer5ReloadVal=(uint16_t)((TMR5H << 8) | TMR5L);
 
-    // CKPS 1:8; NOT_SYNC synchronize; TMR5ON enabled; T5RD16 disabled; 
-    T5CON = 0x31;
+    // Enabling TMR5 interrupt.
+    PIE8bits.TMR5IE = 1;
+
+    // Set Default Interrupt Handler
+    TMR5_SetInterruptHandler(TMR5_DefaultInterruptHandler);
+
+    // CKPS 1:8; NOT_SYNC synchronize; TMR5ON disabled; T5RD16 disabled; 
+    T5CON = 0x30;
 }
 
 void TMR5_StartTimer(void)
@@ -154,11 +161,29 @@ uint8_t TMR5_CheckGateValueStatus(void)
     return (T5GCONbits.T5GVAL);
 }
 
-bool TMR5_HasOverflowOccured(void)
+void TMR5_ISR(void)
 {
-    // check if  overflow has occurred by checking the TMRIF bit
-    return(PIR8bits.TMR5IF);
+
+    // Clear the TMR5 interrupt flag
+    PIR8bits.TMR5IF = 0;
+    TMR5_WriteTimer(timer5ReloadVal);
+
+    if(TMR5_InterruptHandler)
+    {
+        TMR5_InterruptHandler();
+    }
 }
+
+
+void TMR5_SetInterruptHandler(void (* InterruptHandler)(void)){
+    TMR5_InterruptHandler = InterruptHandler;
+}
+
+void TMR5_DefaultInterruptHandler(void){
+    // add your TMR5 interrupt custom code
+    // or set custom function using TMR5_SetInterruptHandler()
+}
+
 /**
   End of File
 */

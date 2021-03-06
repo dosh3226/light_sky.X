@@ -1,3 +1,11 @@
+/*
+ * blue: data in
+ * white: no idea, shorted to blue, orange, red and black
+ * red and orange shorted: probably 5V in
+ * black I assume ground
+ */
+
+
 /**
   Generated Main Source File
 
@@ -51,32 +59,83 @@
 //#define SW0         PORTBbits.RB4
 #define SW0         LATBbits.LATB4
 
-/* trying to sort out a timer function 
- * copying this from the demo file 
- */
-/**
- * @brief This clears IF flag, stops, reloads, and starts TMR1
- * @return None
- * @param [in] 16-bit TMR1H:L value
- * @example TMR1_StopAndStartTimer(DELAY_3s);
- */
-inline void TMR1_StopAndStartTimer(uint16_t delay)
-{
-    // Clearing IF flag.
-    PIR3bits.TMR1IF = 0;
-    
-    // Stop, reload, start
-    TMR1_StopTimer();
-    TMR1_WriteTimer(delay);
-    TMR1_StartTimer();
-}
+/* high and low values */
+/* 220-420ns */
+int T0H = 0;
+/* 750ns-1.6us */
+int T1H = 0;
+/* 750ns-1.6us */
+int T0L = 0;
+/* 220-420ns */
+int T1L = 0;
 
+uint16_t tmr1_delay_1sec = 0xB1E0;
+
+void flash_led()
+{    
+    int counter = 0;
+    while (1)
+    {
+        LED0 = 1;
+        TMR1_Reload();
+        while(TMR1_ReadTimer() < tmr1_delay_1sec)
+        {
+            counter++;
+        }
+        // Clearing IF flag.
+        PIR3bits.TMR1IF = 0;
+        LED0 = 0;
+        TMR1_Reload();
+        while(TMR1_ReadTimer() < tmr1_delay_1sec)
+        {
+            counter++;
+        }
+        // Clearing IF flag.
+        PIR3bits.TMR1IF = 0;
+        counter++;
+    }
+}
+//
+//void send_1()
+//{
+//    LATCbits.LATC3 = 1;
+//    TMR2_Period8BitSet(0xF000);
+//    TMR2_Start();
+//    while(TMR2_HasOverflowOccured() == 0);
+//    LATCbits.LATC3 = 1;
+//    TMR2_Stop();
+//}
+
+void TMR0_Initialize_custom(void)
+{
+    // Set TMR0 to the options selected in the User Interface
+
+    // T0CS HFINTOSC; T0CKPS 1:8192; T0ASYNC synchronised; 
+    T0CON1 = 0x6D;
+
+    // TMR0H 121; 
+    TMR0H = 0x3C;
+
+    // TMR0L 0; 
+    TMR0L = 0x79;
+
+    // Clearing IF flag
+    PIR3bits.TMR0IF = 0;
+
+    // T0OUTPS 1:16; T0EN enabled; T016BIT 8-bit; 
+    T0CON0 = 0x8F;
+}
 
 void main(void)
 {
     // Initialize the device
     SYSTEM_Initialize();
-
+    
+    /* init slow timer */
+    TMR0_Initialize();
+    TMR1_Initialize();
+    /* init the nanosecond timer */
+    //TMR2_Initialize();
     // If using interrupts in PIC18 High/Low Priority Mode you need to enable the Global High and Low Interrupts
     // If using interrupts in PIC Mid-Range Compatibility Mode you need to enable the Global Interrupts
     // Use the following macros to:
@@ -91,17 +150,84 @@ void main(void)
     TRISBbits.TRISB4 = 1;   //SW0 as input
     LED0 = 1; // LED0 off
     
+    // string 1
+    //TRISCbits.TRISC3 = 0;
+    
+    uint16_t counter = 0;
+//    uint16_t tmr_ctr = 0;
+    //TMR1_StartTimer();
     while (1)
     {
-        // Add your application code
-        //LED0 = 0;    //LED1 turns on when SW0 is pressed
-        if(SW0 == 1)
+        // timer 0
+//        for(int i = 0; i < 5; i++)
+//        {
+//            if(TMR0_HasOverflowOccured())
+//            {
+//                LED0=!LED0;
+//                TMR0H = 0x79;
+//                TMR0L = 0x10;
+//                PIR3bits.TMR0IF = 0;
+//            }
+//        }
+//        for(int i = 0; i < 5; i++)
+//        {
+//            if(TMR0_HasOverflowOccured())
+//            {
+//                LED0=!LED0;
+//                TMR0H = 0x10;
+//                TMR0L = 0x79;
+//                PIR3bits.TMR0IF = 0;
+//            }
+//        }
+        
+        // timer 1
+        for(int i = 0; i < 5; i++)
         {
-            LED0 = 0;    //LED1 turns on when SW0 is pressed
+            if(TMR1_HasOverflowOccured())
+            {
+                LED0=!LED0;
+                //TMR1H 133; 
+                TMR1H = 0x85;
+                //TMR1L 238; 
+                TMR1L = 0xEE;
+                PIR3bits.TMR1IF = 0;
+            }
         }
-        //LED0 = !SW0;    //LED1 turns on when SW1 is pressed
+        for(int i = 0; i < 5; i++)
+        {
+            if(TMR1_HasOverflowOccured())
+            {
+                LED0=!LED0;
+                //TMR1H 133; 
+                TMR1H = 0x85;
+                //TMR1L 238; 
+                TMR1L = 0xEE;
+                PIR3bits.TMR1IF = 0;
+            }
+        }
+//        LED0 = 0;
+//        TMR0_Reload(0xFF);
+//        while(PIR3bits.TMR0IF == 0);
+//        LED0 = 1;
+//        TMR0_Reload(0xFF);
+//        while(PIR3bits.TMR0IF == 0);
     }
 }
+
+//        LED0 = 0;
+//        counter = 0;
+//        // Clearing IF flag.
+//        PIR3bits.TMR1IF = 0;
+//        TMR1_Reload();
+//        counter = TMR1_ReadTimer();
+//        while(counter < tmr1_delay_1sec)
+//        {
+//            counter = TMR1_ReadTimer();
+//            tmr_ctr++;
+//        }
+//        TMR1_WriteTimer(0);
+//        TMR1_Reload();
+//        tmr_ctr = 0;
 /**
  End of File
 */

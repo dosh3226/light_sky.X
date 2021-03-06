@@ -52,6 +52,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <conio.h>
+#include "interrupt_manager.h"
 #include "tmr5.h"
 #include "tmr6.h"
 #include "tmr3.h"
@@ -62,6 +63,8 @@
 #include "uart3.h"
 #include "uart2.h"
 #include "uart1.h"
+#include "delay.h"
+#include "clkref.h"
 
 
 

@@ -51,11 +51,6 @@
 #include <xc.h>
 #include "tmr0.h"
 
-/**
-  Section: Global Variables Definitions
-*/
-
-volatile uint16_t timer0ReloadVal16bit;
 
 /**
   Section: TMR0 APIs
@@ -66,23 +61,20 @@ void TMR0_Initialize(void)
 {
     // Set TMR0 to the options selected in the User Interface
 
-    // T0CS T0CKI_PIN; T0CKPS 1:64; T0ASYNC synchronised; 
-    T0CON1 = 0x06;
+    // T0CS HFINTOSC; T0CKPS 1:8192; T0ASYNC synchronised; 
+    T0CON1 = 0x6D;
 
-    // TMR0H 255; 
-    TMR0H = 0xFF;
+    // TMR0H 121; 
+    TMR0H = 0x79;
 
-    // TMR0L 252; 
-    TMR0L = 0xFC;
-
-    // Load TMR0 value to the 16-bit reload variable
-    timer0ReloadVal16bit = (TMR0H << 8) | TMR0L;
+    // TMR0L 0; 
+    TMR0L = 0x00;
 
     // Clearing IF flag
     PIR3bits.TMR0IF = 0;
 
-    // T0OUTPS 1:1; T0EN enabled; T016BIT 16-bit; 
-    T0CON0 = 0x90;
+    // T0OUTPS 1:16; T0EN enabled; T016BIT 8-bit; 
+    T0CON0 = 0x8F;
 }
 
 void TMR0_StartTimer(void)
@@ -97,31 +89,26 @@ void TMR0_StopTimer(void)
     T0CON0bits.T0EN = 0;
 }
 
-uint16_t TMR0_ReadTimer(void)
+uint8_t TMR0_ReadTimer(void)
 {
-    uint16_t readVal;
-    uint8_t readValLow;
-    uint8_t readValHigh;
+    uint8_t readVal;
 
-    readValLow  = TMR0L;
-    readValHigh = TMR0H;
-    readVal  = ((uint16_t)readValHigh << 8) + readValLow;
+    // read Timer0, low register only
+    readVal = TMR0L;
 
     return readVal;
 }
 
-void TMR0_WriteTimer(uint16_t timerVal)
+void TMR0_WriteTimer(uint8_t timerVal)
 {
-    // Write to the Timer0 register
-    TMR0H = timerVal >> 8;
-    TMR0L = (uint8_t) timerVal;
-}
+    // Write to Timer0 registers, low register only
+    TMR0L = timerVal;
+ }
 
-void TMR0_Reload(void)
+void TMR0_Reload(uint8_t periodVal)
 {
-    // Write to the Timer0 register
-    TMR0H = timer0ReloadVal16bit >> 8;
-    TMR0L = (uint8_t) timer0ReloadVal16bit;
+   // Write to Timer0 registers, high register only
+   TMR0H = periodVal;
 }
 
 bool TMR0_HasOverflowOccured(void)

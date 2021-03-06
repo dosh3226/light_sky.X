@@ -49,6 +49,7 @@
 
 void SYSTEM_Initialize(void)
 {
+    INTERRUPT_Initialize();
     PMD_Initialize();
     PIN_MANAGER_Initialize();
     OSCILLATOR_Initialize();
@@ -62,6 +63,7 @@ void SYSTEM_Initialize(void)
     UART1_Initialize();
     UART3_Initialize();
     UART2_Initialize();
+    CLKREF_Initialize();
 }
 
 void OSCILLATOR_Initialize(void)
@@ -70,8 +72,8 @@ void OSCILLATOR_Initialize(void)
     OSCCON1 = 0x60;
     // CSWHOLD may proceed; SOSCPWR Low power; 
     OSCCON3 = 0x00;
-    // MFOEN disabled; LFOEN disabled; ADOEN disabled; SOSCEN disabled; EXTOEN disabled; HFOEN disabled; 
-    OSCEN = 0x00;
+    // MFOEN enabled; LFOEN disabled; ADOEN disabled; SOSCEN disabled; EXTOEN disabled; HFOEN disabled; 
+    OSCEN = 0x20;
     // HFFRQ 16_MHz; 
     OSCFRQ = 0x05;
     // TUN 0; 
