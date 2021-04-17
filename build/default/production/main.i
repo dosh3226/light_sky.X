@@ -28592,9 +28592,9 @@ unsigned char __t3rd16on(void);
 # 50 "./mcc_generated_files/mcc.h" 2
 
 # 1 "./mcc_generated_files/pin_manager.h" 1
-# 174 "./mcc_generated_files/pin_manager.h"
+# 182 "./mcc_generated_files/pin_manager.h"
 void PIN_MANAGER_Initialize (void);
-# 186 "./mcc_generated_files/pin_manager.h"
+# 194 "./mcc_generated_files/pin_manager.h"
 void PIN_MANAGER_IOC(void);
 # 51 "./mcc_generated_files/mcc.h" 2
 
@@ -29617,39 +29617,6 @@ void TMR0_Reload(uint8_t periodVal);
 _Bool TMR0_HasOverflowOccured(void);
 # 62 "./mcc_generated_files/mcc.h" 2
 
-# 1 "./mcc_generated_files/uart3.h" 1
-# 74 "./mcc_generated_files/uart3.h"
-typedef union {
-    struct {
-        unsigned perr : 1;
-        unsigned ferr : 1;
-        unsigned oerr : 1;
-        unsigned reserved : 5;
-    };
-    uint8_t status;
-}uart3_status_t;
-# 110 "./mcc_generated_files/uart3.h"
-void UART3_Initialize(void);
-# 158 "./mcc_generated_files/uart3.h"
-_Bool UART3_is_rx_ready(void);
-# 206 "./mcc_generated_files/uart3.h"
-_Bool UART3_is_tx_ready(void);
-# 253 "./mcc_generated_files/uart3.h"
-_Bool UART3_is_tx_done(void);
-# 301 "./mcc_generated_files/uart3.h"
-uart3_status_t UART3_get_last_status(void);
-# 350 "./mcc_generated_files/uart3.h"
-uint8_t UART3_Read(void);
-# 375 "./mcc_generated_files/uart3.h"
-void UART3_Write(uint8_t txData);
-# 395 "./mcc_generated_files/uart3.h"
-void UART3_SetFramingErrorHandler(void (* interruptHandler)(void));
-# 413 "./mcc_generated_files/uart3.h"
-void UART3_SetOverrunErrorHandler(void (* interruptHandler)(void));
-# 431 "./mcc_generated_files/uart3.h"
-void UART3_SetErrorHandler(void (* interruptHandler)(void));
-# 63 "./mcc_generated_files/mcc.h" 2
-
 # 1 "./mcc_generated_files/uart2.h" 1
 # 74 "./mcc_generated_files/uart2.h"
 typedef union {
@@ -29681,7 +29648,7 @@ void UART2_SetFramingErrorHandler(void (* interruptHandler)(void));
 void UART2_SetOverrunErrorHandler(void (* interruptHandler)(void));
 # 431 "./mcc_generated_files/uart2.h"
 void UART2_SetErrorHandler(void (* interruptHandler)(void));
-# 64 "./mcc_generated_files/mcc.h" 2
+# 63 "./mcc_generated_files/mcc.h" 2
 
 # 1 "./mcc_generated_files/uart1.h" 1
 # 57 "./mcc_generated_files/uart1.h"
@@ -29854,132 +29821,191 @@ void UART1_SetFramingErrorHandler(void (* interruptHandler)(void));
 void UART1_SetOverrunErrorHandler(void (* interruptHandler)(void));
 # 432 "./mcc_generated_files/uart1.h"
 void UART1_SetErrorHandler(void (* interruptHandler)(void));
-# 65 "./mcc_generated_files/mcc.h" 2
+# 64 "./mcc_generated_files/mcc.h" 2
 
 # 1 "./mcc_generated_files/delay.h" 1
 # 34 "./mcc_generated_files/delay.h"
 void DELAY_milliseconds(uint16_t milliseconds);
 void DELAY_microseconds(uint16_t microseconds);
-# 66 "./mcc_generated_files/mcc.h" 2
+# 65 "./mcc_generated_files/mcc.h" 2
 
 # 1 "./mcc_generated_files/clkref.h" 1
 # 92 "./mcc_generated_files/clkref.h"
 void CLKREF_Initialize(void);
-# 67 "./mcc_generated_files/mcc.h" 2
-# 82 "./mcc_generated_files/mcc.h"
+# 66 "./mcc_generated_files/mcc.h" 2
+# 81 "./mcc_generated_files/mcc.h"
 void SYSTEM_Initialize(void);
-# 95 "./mcc_generated_files/mcc.h"
+# 94 "./mcc_generated_files/mcc.h"
 void OSCILLATOR_Initialize(void);
-# 108 "./mcc_generated_files/mcc.h"
+# 107 "./mcc_generated_files/mcc.h"
 void PMD_Initialize(void);
 # 52 "main.c" 2
-# 64 "main.c"
-int T0H = 0;
+# 69 "main.c"
+int T0H = 1;
 
-int T1H = 0;
 
-int T0L = 0;
+int T1H = 3;
 
-int T1L = 0;
 
-uint16_t tmr1_delay_1sec = 0xB1E0;
+int T0L = 1;
 
-void flash_led()
+
+int T1L = 1;
+
+
+int reset_time = 1;
+
+
+
+void tmr0_delay()
 {
-    int counter = 0;
-    while (1)
-    {
-        LATFbits.LATF3 = 1;
-        TMR1_Reload();
-        while(TMR1_ReadTimer() < tmr1_delay_1sec)
+    TMR0_Initialize();
+    while(1) {
+        if(TMR0_HasOverflowOccured())
         {
-            counter++;
+            return;
         }
-
-        PIR3bits.TMR1IF = 0;
-        LATFbits.LATF3 = 0;
-        TMR1_Reload();
-        while(TMR1_ReadTimer() < tmr1_delay_1sec)
-        {
-            counter++;
-        }
-
-        PIR3bits.TMR1IF = 0;
-        counter++;
     }
 }
-# 109 "main.c"
-void TMR0_Initialize_custom(void)
+
+
+
+void tmr1_delay()
 {
-
-
-
-    T0CON1 = 0x6D;
-
-
-    TMR0H = 0x3C;
-
-
-    TMR0L = 0x79;
-
-
-    PIR3bits.TMR0IF = 0;
-
-
-    T0CON0 = 0x8F;
+    TMR1_Initialize();
+    while(1) {
+        if(TMR1_HasOverflowOccured())
+        {
+            return;
+        }
+    }
 }
 
+
+
+
+void tmr3_delay()
+{
+    TMR3_Initialize();
+    while(1) {
+        if(TMR1_HasOverflowOccured())
+        {
+            return;
+        }
+    }
+}
+# 134 "main.c"
 void main(void)
 {
 
     SYSTEM_Initialize();
-
-
-    TMR0_Initialize();
-    TMR1_Initialize();
-# 149 "main.c"
+# 153 "main.c"
     TRISFbits.TRISF3 = 0;
+    TRISAbits.TRISA7 = 0;
     TRISBbits.TRISB4 = 1;
     LATFbits.LATF3 = 1;
 
 
 
+    int LEDs = 3;
 
-    uint16_t counter = 0;
 
+    uint8_t string[9];
+    string[0] = 255;
+    string[1] = 0;
+    string[2] = 0;
 
-    while (1)
+    string[3] = 0;
+    string[4] = 255;
+    string[5] = 0;
+
+    string[6] = 0;
+    string[7] = 0;
+    string[8] = 255;
+# 226 "main.c"
+    for(int i = 0; i < 9; i++)
     {
-# 184 "main.c"
-        for(int i = 0; i < 5; i++)
+
+        for(int j = 0; j < 7; j++)
         {
-            if(TMR1_HasOverflowOccured())
+
+            if(((string[i] & ( 1 << j )) >> j) == 0)
             {
-                LATFbits.LATF3=!LATFbits.LATF3;
 
-                TMR1H = 0x85;
+                LATAbits.LATA7=1;
+                LATAbits.LATA7=1;
+                LATAbits.LATA7=1;
+                LATAbits.LATA7=1;
+                LATAbits.LATA7=1;
+                LATAbits.LATA7=1;
 
-                TMR1L = 0xEE;
-                PIR3bits.TMR1IF = 0;
+
+                LATAbits.LATA7=0;
+                LATAbits.LATA7=0;
+                LATAbits.LATA7=0;
+                LATAbits.LATA7=0;
+                LATAbits.LATA7=0;
+                LATAbits.LATA7=0;
+                LATAbits.LATA7=0;
+                LATAbits.LATA7=0;
+                LATAbits.LATA7=0;
+                LATAbits.LATA7=0;
+                LATAbits.LATA7=0;
+                LATAbits.LATA7=0;
             }
-        }
-        for(int i = 0; i < 5; i++)
-        {
-            if(TMR1_HasOverflowOccured())
+            else
             {
-                LATFbits.LATF3=!LATFbits.LATF3;
 
-                TMR1H = 0x85;
+                LATAbits.LATA7=1;
+                LATAbits.LATA7=1;
+                LATAbits.LATA7=1;
+                LATAbits.LATA7=1;
+                LATAbits.LATA7=1;
+                LATAbits.LATA7=1;
 
-                TMR1L = 0xEE;
-                PIR3bits.TMR1IF = 0;
+                LATAbits.LATA7=1;
+                LATAbits.LATA7=1;
+                LATAbits.LATA7=1;
+                LATAbits.LATA7=1;
+                LATAbits.LATA7=1;
+                LATAbits.LATA7=1;
+
+                LATAbits.LATA7=1;
+                LATAbits.LATA7=1;
+                LATAbits.LATA7=1;
+
+
+                LATAbits.LATA7=0;
+                LATAbits.LATA7=0;
+                LATAbits.LATA7=0;
+                LATAbits.LATA7=0;
+                LATAbits.LATA7=0;
+                LATAbits.LATA7=0;
+                LATAbits.LATA7=0;
+                LATAbits.LATA7=0;
+                LATAbits.LATA7=0;
+                LATAbits.LATA7=0;
+                LATAbits.LATA7=0;
+                LATAbits.LATA7=0;
             }
+
         }
-
-
-
-
-
-
     }
+
+
+
+
+
+        do { LATFbits.LATF3 = 1; } while(0);
+        do { LATAbits.LATA7 = 1; } while(0);
+        tmr1_delay();
+        do { LATFbits.LATF3 = 0; } while(0);
+        do { LATAbits.LATA7 = 0; } while(0);
+
+        tmr1_delay();
+        do { LATFbits.LATF3 = 1; } while(0);
+        do { LATAbits.LATA7 = 1; } while(0);
+        tmr1_delay();
+
+        while (1) {}
 }

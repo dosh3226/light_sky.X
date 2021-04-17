@@ -2603,11 +2603,11 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U _TMR0_Initialize ]
 [f ]
 "65
-[; ;mcc_generated_files/tmr0.c: 65:     T0CON1 = 0x6D;
-[e = _T0CON1 -> -> 109 `i `uc ]
+[; ;mcc_generated_files/tmr0.c: 65:     T0CON1 = 0x60;
+[e = _T0CON1 -> -> 96 `i `uc ]
 "68
-[; ;mcc_generated_files/tmr0.c: 68:     TMR0H = 0x79;
-[e = _TMR0H -> -> 121 `i `uc ]
+[; ;mcc_generated_files/tmr0.c: 68:     TMR0H = 0x17;
+[e = _TMR0H -> -> 23 `i `uc ]
 "71
 [; ;mcc_generated_files/tmr0.c: 71:     TMR0L = 0x00;
 [e = _TMR0L -> -> 0 `i `uc ]
@@ -2615,8 +2615,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;mcc_generated_files/tmr0.c: 74:     PIR3bits.TMR0IF = 0;
 [e = . . _PIR3bits 0 7 -> -> 0 `i `uc ]
 "77
-[; ;mcc_generated_files/tmr0.c: 77:     T0CON0 = 0x8F;
-[e = _T0CON0 -> -> 143 `i `uc ]
+[; ;mcc_generated_files/tmr0.c: 77:     T0CON0 = 0x80;
+[e = _T0CON0 -> -> 128 `i `uc ]
 "78
 [; ;mcc_generated_files/tmr0.c: 78: }
 [e :UE 2346 ]

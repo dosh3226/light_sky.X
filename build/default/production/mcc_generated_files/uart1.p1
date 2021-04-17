@@ -2732,17 +2732,17 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;mcc_generated_files/uart1.c: 91:     U1CON0 = 0xB0;
 [e = _U1CON0 -> -> 176 `i `uc ]
 "94
-[; ;mcc_generated_files/uart1.c: 94:     U1CON1 = 0x00;
-[e = _U1CON1 -> -> 0 `i `uc ]
+[; ;mcc_generated_files/uart1.c: 94:     U1CON1 = 0x80;
+[e = _U1CON1 -> -> 128 `i `uc ]
 "97
 [; ;mcc_generated_files/uart1.c: 97:     U1CON2 = 0x00;
 [e = _U1CON2 -> -> 0 `i `uc ]
 "100
-[; ;mcc_generated_files/uart1.c: 100:     U1BRGL = 0xA0;
-[e = _U1BRGL -> -> 160 `i `uc ]
+[; ;mcc_generated_files/uart1.c: 100:     U1BRGL = 0x82;
+[e = _U1BRGL -> -> 130 `i `uc ]
 "103
-[; ;mcc_generated_files/uart1.c: 103:     U1BRGH = 0x01;
-[e = _U1BRGH -> -> 1 `i `uc ]
+[; ;mcc_generated_files/uart1.c: 103:     U1BRGH = 0x06;
+[e = _U1BRGH -> -> 6 `i `uc ]
 "106
 [; ;mcc_generated_files/uart1.c: 106:     U1FIFO = 0x00;
 [e = _U1FIFO -> -> 0 `i `uc ]

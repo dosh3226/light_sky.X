@@ -28909,7 +28909,7 @@ void TMR2_Initialize(void)
     T2RST = 0x00;
 
 
-    T2PR = 0x04;
+    T2PR = 0x12;
 
 
     T2TMR = 0x00;

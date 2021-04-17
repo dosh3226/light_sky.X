@@ -18,11 +18,10 @@
         <itemPath>mcc_generated_files/tmr5.h</itemPath>
         <itemPath>mcc_generated_files/tmr6.h</itemPath>
         <itemPath>mcc_generated_files/uart2.h</itemPath>
-        <itemPath>mcc_generated_files/uart1.h</itemPath>
-        <itemPath>mcc_generated_files/uart3.h</itemPath>
         <itemPath>mcc_generated_files/delay.h</itemPath>
         <itemPath>mcc_generated_files/interrupt_manager.h</itemPath>
         <itemPath>mcc_generated_files/clkref.h</itemPath>
+        <itemPath>mcc_generated_files/uart1.h</itemPath>
       </logicalFolder>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
@@ -48,12 +47,11 @@
         <itemPath>mcc_generated_files/tmr4.c</itemPath>
         <itemPath>mcc_generated_files/tmr5.c</itemPath>
         <itemPath>mcc_generated_files/tmr6.c</itemPath>
-        <itemPath>mcc_generated_files/uart1.c</itemPath>
         <itemPath>mcc_generated_files/uart2.c</itemPath>
-        <itemPath>mcc_generated_files/uart3.c</itemPath>
         <itemPath>mcc_generated_files/delay.c</itemPath>
         <itemPath>mcc_generated_files/interrupt_manager.c</itemPath>
         <itemPath>mcc_generated_files/clkref.c</itemPath>
+        <itemPath>mcc_generated_files/uart1.c</itemPath>
       </logicalFolder>
       <itemPath>main.c</itemPath>
     </logicalFolder>

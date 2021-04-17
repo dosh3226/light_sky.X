@@ -28641,10 +28641,10 @@ void TMR3_Initialize(void)
     T3CLK = 0x03;
 
 
-    TMR3H = 0xFF;
+    TMR3H = 0x06;
 
 
-    TMR3L = 0xFE;
+    TMR3L = 0x00;
 
 
     PIR5bits.TMR3IF = 0;
@@ -28659,7 +28659,7 @@ void TMR3_Initialize(void)
     TMR3_SetInterruptHandler(TMR3_DefaultInterruptHandler);
 
 
-    T3CON = 0x30;
+    T3CON = 0x33;
 }
 
 void TMR3_StartTimer(void)

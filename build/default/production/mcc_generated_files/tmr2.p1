@@ -2707,8 +2707,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;mcc_generated_files/tmr2.c: 75:     T2RST = 0x00;
 [e = _T2RST -> -> 0 `i `uc ]
 "78
-[; ;mcc_generated_files/tmr2.c: 78:     T2PR = 0x04;
-[e = _T2PR -> -> 4 `i `uc ]
+[; ;mcc_generated_files/tmr2.c: 78:     T2PR = 0x12;
+[e = _T2PR -> -> 18 `i `uc ]
 "81
 [; ;mcc_generated_files/tmr2.c: 81:     T2TMR = 0x00;
 [e = _T2TMR -> -> 0 `i `uc ]

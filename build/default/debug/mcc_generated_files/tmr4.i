@@ -1,4 +1,4 @@
-# 1 "mcc_generated_files/uart3.c"
+# 1 "mcc_generated_files/tmr4.c"
 # 1 "<built-in>" 1
 # 1 "<built-in>" 3
 # 288 "<built-in>" 3
@@ -6,8 +6,8 @@
 # 1 "<built-in>" 2
 # 1 "C:/Program Files/Microchip/MPLABX/v5.45/packs/Microchip/PIC18F-Q_DFP/1.8.154/xc8\\pic\\include\\language_support.h" 1 3
 # 2 "<built-in>" 2
-# 1 "mcc_generated_files/uart3.c" 2
-# 50 "mcc_generated_files/uart3.c"
+# 1 "mcc_generated_files/tmr4.c" 2
+# 51 "mcc_generated_files/tmr4.c"
 # 1 "C:/Program Files/Microchip/MPLABX/v5.45/packs/Microchip/PIC18F-Q_DFP/1.8.154/xc8\\pic\\include\\xc.h" 1 3
 # 18 "C:/Program Files/Microchip/MPLABX/v5.45/packs/Microchip/PIC18F-Q_DFP/1.8.154/xc8\\pic\\include\\xc.h" 3
 extern const char __xc8_OPTIM_SPEED;
@@ -28584,181 +28584,436 @@ __attribute__((__unsupported__("The READTIMER" "3" "() macro is not available wi
 unsigned char __t1rd16on(void);
 unsigned char __t3rd16on(void);
 # 34 "C:/Program Files/Microchip/MPLABX/v5.45/packs/Microchip/PIC18F-Q_DFP/1.8.154/xc8\\pic\\include\\xc.h" 2 3
-# 50 "mcc_generated_files/uart3.c" 2
+# 51 "mcc_generated_files/tmr4.c" 2
 
-# 1 "mcc_generated_files/uart3.h" 1
-# 55 "mcc_generated_files/uart3.h"
+# 1 "mcc_generated_files/tmr4.h" 1
+# 55 "mcc_generated_files/tmr4.h"
 # 1 "C:\\Program Files\\Microchip\\xc8\\v2.31\\pic\\include\\c99\\stdbool.h" 1 3
-# 55 "mcc_generated_files/uart3.h" 2
-# 74 "mcc_generated_files/uart3.h"
-typedef union {
-    struct {
-        unsigned perr : 1;
-        unsigned ferr : 1;
-        unsigned oerr : 1;
-        unsigned reserved : 5;
-    };
-    uint8_t status;
-}uart3_status_t;
-# 110 "mcc_generated_files/uart3.h"
-void UART3_Initialize(void);
-# 158 "mcc_generated_files/uart3.h"
-_Bool UART3_is_rx_ready(void);
-# 206 "mcc_generated_files/uart3.h"
-_Bool UART3_is_tx_ready(void);
-# 253 "mcc_generated_files/uart3.h"
-_Bool UART3_is_tx_done(void);
-# 301 "mcc_generated_files/uart3.h"
-uart3_status_t UART3_get_last_status(void);
-# 350 "mcc_generated_files/uart3.h"
-uint8_t UART3_Read(void);
-# 375 "mcc_generated_files/uart3.h"
-void UART3_Write(uint8_t txData);
-# 395 "mcc_generated_files/uart3.h"
-void UART3_SetFramingErrorHandler(void (* interruptHandler)(void));
-# 413 "mcc_generated_files/uart3.h"
-void UART3_SetOverrunErrorHandler(void (* interruptHandler)(void));
-# 431 "mcc_generated_files/uart3.h"
-void UART3_SetErrorHandler(void (* interruptHandler)(void));
-# 51 "mcc_generated_files/uart3.c" 2
-
-
-static volatile uart3_status_t uart3RxLastError;
+# 55 "mcc_generated_files/tmr4.h" 2
+# 79 "mcc_generated_files/tmr4.h"
+typedef enum
+{
+# 89 "mcc_generated_files/tmr4.h"
+   TMR4_ROP_STARTS_TMRON,
 
 
 
 
-void (*UART3_FramingErrorHandler)(void);
-void (*UART3_OverrunErrorHandler)(void);
-void (*UART3_ErrorHandler)(void);
+   TMR4_ROP_STARTS_TMRON_ERSHIGH,
 
-void UART3_DefaultFramingErrorHandler(void);
-void UART3_DefaultOverrunErrorHandler(void);
-void UART3_DefaultErrorHandler(void);
 
-void UART3_Initialize(void)
+
+
+   TMR4_ROP_STARTS_TMRON_ERSLOW,
+
+
+
+
+   TMR4_ROP_RESETS_ERSBOTHEDGE,
+
+
+
+
+   TMR4_ROP_RESETS_ERSRISINGEDGE,
+
+
+
+
+   TMR4_ROP_RESETS_ERSFALLINGEDGE,
+
+
+
+
+   TMR4_ROP_RESETS_ERSLOW,
+
+
+
+
+   TMR4_ROP_RESETS_ERSHIGH,
+# 135 "mcc_generated_files/tmr4.h"
+   TMR4_OS_STARTS_TMRON,
+
+
+
+
+   TMR4_OS_STARTS_ERSRISINGEDGE ,
+
+
+
+
+   TMR4_OS_STARTS_ERSFALLINGEDGE ,
+
+
+
+
+   TMR4_OS_STARTS_ERSBOTHEDGE,
+
+
+
+
+
+   TMR4_OS_STARTS_ERSFIRSTRISINGEDGE,
+
+
+
+
+
+   TMR4_OS_STARTS_ERSFIRSTFALLINGEDGE,
+
+
+
+
+
+   TMR4_OS_STARTS_ERSRISINGEDGEDETECT,
+
+
+
+
+   TMR4_OS_STARTS_ERSFALLINGEDGEDETECT,
+
+
+
+
+   TMR4_OS_STARTS_TMRON_ERSHIGH = 0x16,
+
+
+
+
+   TMR4_OS_STARTS_TMRON_ERSLOW = 0x17,
+# 192 "mcc_generated_files/tmr4.h"
+   TMR4_MS_STARTS_TMRON_ERSRISINGEDGEDETECT = 0x11,
+
+
+
+
+   TMR4_MS_STARTS_TMRON_ERSFALLINGEDGEDETECT = 0x12,
+
+
+
+
+
+   TMR4_MS_STARTS_TMRON_ERSBOTHEDGE = 0x13
+
+} TMR4_HLT_MODE;
+# 220 "mcc_generated_files/tmr4.h"
+typedef enum
+{
+
+
+    TMR4_T4INPPS,
+
+
+
+    TMR4_T2POSTSCALED,
+
+
+
+    TMR4_RESERVED,
+
+
+
+    TMR4_T6POSTSCALED,
+
+
+
+    TMR4_CCP1_OUT,
+
+
+
+    TMR4_CCP2_OUT,
+
+
+
+    TMR4_CCP3_OUT,
+
+
+
+    TMR4_PWM1S1P1_OUT,
+
+
+
+    TMR4_PWM1S1P2_OUT,
+
+
+
+    TMR4_PWM2S1P1_OUT,
+
+
+
+    TMR4_PWM2S1P2_OUT,
+
+
+
+    TMR4_PWM3S1P1_OUT,
+
+
+
+    TMR4_PWM3S1P2_OUT,
+
+
+
+    TMR4_RESERVED_2,
+
+
+
+    TMR4_RESERVED_3,
+
+
+
+    TMR4_CMP1_OUT,
+
+
+
+    TMR4_CMP2_OUT,
+
+
+
+    TMR4_ZCD_OUTPUT,
+
+
+
+    TMR4_CLC1_OUT,
+
+
+
+    TMR4_CLC2_OUT,
+
+
+
+    TMR4_CLC3_OUT,
+
+
+
+    TMR4_CLC4_OUT,
+
+
+
+    TMR4_CLC5_OUT,
+
+
+
+    TMR4_CLC6_OUT,
+
+
+
+    TMR4_CLC7_OUT,
+
+
+
+    TMR4_CLC8_OUT,
+
+
+
+    TMR4_UART1_RX_EDGE,
+
+
+
+    TMR4_UART1_TX_EDGE,
+
+
+
+    TMR4_UART2_RX_EDGE,
+
+
+
+    TMR4_UART2_TX_EDGE,
+
+
+
+    TMR4_UART3_RX_EDGE,
+
+
+
+    TMR4_UART3_TX_EDGE,
+
+
+
+    TMR4_UART4_RX_EDGE,
+
+
+
+    TMR4_UART4_TX_EDGE,
+
+
+
+    TMR4_UART5_RX_EDGE,
+
+
+
+    TMR4_UART5_TX_EDGE,
+
+
+
+    TMR4_RESERVED_4
+
+
+} TMR4_HLT_EXT_RESET_SOURCE;
+# 413 "mcc_generated_files/tmr4.h"
+void TMR4_Initialize(void);
+# 449 "mcc_generated_files/tmr4.h"
+void TMR4_ModeSet(TMR4_HLT_MODE mode);
+# 484 "mcc_generated_files/tmr4.h"
+void TMR4_ExtResetSourceSet(TMR4_HLT_EXT_RESET_SOURCE reset);
+# 513 "mcc_generated_files/tmr4.h"
+void TMR4_Start(void);
+# 542 "mcc_generated_files/tmr4.h"
+void TMR4_StartTimer(void);
+# 574 "mcc_generated_files/tmr4.h"
+void TMR4_Stop(void);
+# 606 "mcc_generated_files/tmr4.h"
+void TMR4_StopTimer(void);
+# 641 "mcc_generated_files/tmr4.h"
+uint8_t TMR4_Counter8BitGet(void);
+# 676 "mcc_generated_files/tmr4.h"
+uint8_t TMR4_ReadTimer(void);
+# 715 "mcc_generated_files/tmr4.h"
+void TMR4_Counter8BitSet(uint8_t timerVal);
+# 754 "mcc_generated_files/tmr4.h"
+void TMR4_WriteTimer(uint8_t timerVal);
+# 806 "mcc_generated_files/tmr4.h"
+void TMR4_Period8BitSet(uint8_t periodVal);
+# 858 "mcc_generated_files/tmr4.h"
+void TMR4_LoadPeriodRegister(uint8_t periodVal);
+# 876 "mcc_generated_files/tmr4.h"
+void TMR4_ISR(void);
+# 894 "mcc_generated_files/tmr4.h"
+ void TMR4_SetInterruptHandler(void (* InterruptHandler)(void));
+# 912 "mcc_generated_files/tmr4.h"
+extern void (*TMR4_InterruptHandler)(void);
+# 930 "mcc_generated_files/tmr4.h"
+void TMR4_DefaultInterruptHandler(void);
+# 52 "mcc_generated_files/tmr4.c" 2
+
+
+
+
+
+
+void (*TMR4_InterruptHandler)(void);
+
+
+
+
+
+void TMR4_Initialize(void)
 {
 
 
 
+    T4CLKCON = 0x03;
 
 
-    U3P1L = 0x00;
+    T4HLT = 0x00;
 
 
-    U3P2L = 0x00;
+    T4RST = 0x00;
 
 
-    U3P3L = 0x00;
+    T4PR = 0xFF;
 
 
-    U3CON0 = 0xB0;
+    T4TMR = 0x00;
 
 
-    U3CON1 = 0x00;
+    PIR11bits.TMR4IF = 0;
 
 
-    U3CON2 = 0x00;
+    PIE11bits.TMR4IE = 1;
 
 
-    U3BRGL = 0xA0;
+    TMR4_SetInterruptHandler(TMR4_DefaultInterruptHandler);
 
 
-    U3BRGH = 0x01;
-
-
-    U3FIFO = 0x00;
-
-
-    U3UIR = 0x00;
-
-
-    U3ERRIR = 0x00;
-
-
-    U3ERRIE = 0x00;
-
-
-    UART3_SetFramingErrorHandler(UART3_DefaultFramingErrorHandler);
-    UART3_SetOverrunErrorHandler(UART3_DefaultOverrunErrorHandler);
-    UART3_SetErrorHandler(UART3_DefaultErrorHandler);
-
-    uart3RxLastError.status = 0;
-
+    T4CON = 0x00;
 }
 
-_Bool UART3_is_rx_ready(void)
+void TMR4_ModeSet(TMR4_HLT_MODE mode)
 {
-    return (_Bool)(PIR9bits.U3RXIF);
+
+    T4HLTbits.MODE = mode;
 }
 
-_Bool UART3_is_tx_ready(void)
+void TMR4_ExtResetSourceSet(TMR4_HLT_EXT_RESET_SOURCE reset)
 {
-    return (_Bool)(PIR9bits.U3TXIF && U3CON0bits.TXEN);
+
+    T4RSTbits.RSEL = reset;
 }
 
-_Bool UART3_is_tx_done(void)
+void TMR4_Start(void)
 {
-    return U3ERRIRbits.TXMTIF;
+
+    T4CONbits.TMR4ON = 1;
 }
 
-uart3_status_t UART3_get_last_status(void){
-    return uart3RxLastError;
-}
-
-uint8_t UART3_Read(void)
+void TMR4_StartTimer(void)
 {
-    while(!PIR9bits.U3RXIF)
+    TMR4_Start();
+}
+
+void TMR4_Stop(void)
+{
+
+    T4CONbits.TMR4ON = 0;
+}
+
+void TMR4_StopTimer(void)
+{
+    TMR4_Stop();
+}
+
+uint8_t TMR4_Counter8BitGet(void)
+{
+    uint8_t readVal;
+
+    readVal = TMR4;
+
+    return readVal;
+}
+
+uint8_t TMR4_ReadTimer(void)
+{
+    return TMR4_Counter8BitGet();
+}
+
+void TMR4_Counter8BitSet(uint8_t timerVal)
+{
+
+    TMR4 = timerVal;
+}
+
+void TMR4_WriteTimer(uint8_t timerVal)
+{
+    TMR4_Counter8BitSet(timerVal);
+}
+
+void TMR4_Period8BitSet(uint8_t periodVal)
+{
+   PR4 = periodVal;
+}
+
+void TMR4_LoadPeriodRegister(uint8_t periodVal)
+{
+   TMR4_Period8BitSet(periodVal);
+}
+
+void TMR4_ISR(void)
+{
+
+
+    PIR11bits.TMR4IF = 0;
+
+    if(TMR4_InterruptHandler)
     {
+        TMR4_InterruptHandler();
     }
-
-    uart3RxLastError.status = 0;
-
-    if(U3ERRIRbits.FERIF){
-        uart3RxLastError.ferr = 1;
-        UART3_FramingErrorHandler();
-    }
-
-    if(U3ERRIRbits.RXFOIF){
-        uart3RxLastError.oerr = 1;
-        UART3_OverrunErrorHandler();
-    }
-
-    if(uart3RxLastError.status){
-        UART3_ErrorHandler();
-    }
-
-    return U3RXB;
-}
-
-void UART3_Write(uint8_t txData)
-{
-    while(0 == PIR9bits.U3TXIF)
-    {
-    }
-
-    U3TXB = txData;
 }
 
 
-
-
-
-void UART3_DefaultFramingErrorHandler(void){}
-
-void UART3_DefaultOverrunErrorHandler(void){}
-
-void UART3_DefaultErrorHandler(void){
+void TMR4_SetInterruptHandler(void (* InterruptHandler)(void)){
+    TMR4_InterruptHandler = InterruptHandler;
 }
 
-void UART3_SetFramingErrorHandler(void (* interruptHandler)(void)){
-    UART3_FramingErrorHandler = interruptHandler;
-}
+void TMR4_DefaultInterruptHandler(void){
 
-void UART3_SetOverrunErrorHandler(void (* interruptHandler)(void)){
-    UART3_OverrunErrorHandler = interruptHandler;
-}
 
-void UART3_SetErrorHandler(void (* interruptHandler)(void)){
-    UART3_ErrorHandler = interruptHandler;
 }

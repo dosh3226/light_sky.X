@@ -28655,16 +28655,16 @@ void UART2_Initialize(void)
     U2CON0 = 0xB0;
 
 
-    U2CON1 = 0x00;
+    U2CON1 = 0x80;
 
 
     U2CON2 = 0x00;
 
 
-    U2BRGL = 0xA0;
+    U2BRGL = 0x82;
 
 
-    U2BRGH = 0x01;
+    U2BRGH = 0x06;
 
 
     U2FIFO = 0x00;

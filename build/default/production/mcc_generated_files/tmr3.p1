@@ -2673,11 +2673,11 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;mcc_generated_files/tmr3.c: 75:     T3CLK = 0x03;
 [e = _T3CLK -> -> 3 `i `uc ]
 "78
-[; ;mcc_generated_files/tmr3.c: 78:     TMR3H = 0xFF;
-[e = _TMR3H -> -> 255 `i `uc ]
+[; ;mcc_generated_files/tmr3.c: 78:     TMR3H = 0x06;
+[e = _TMR3H -> -> 6 `i `uc ]
 "81
-[; ;mcc_generated_files/tmr3.c: 81:     TMR3L = 0xFE;
-[e = _TMR3L -> -> 254 `i `uc ]
+[; ;mcc_generated_files/tmr3.c: 81:     TMR3L = 0x00;
+[e = _TMR3L -> -> 0 `i `uc ]
 "84
 [; ;mcc_generated_files/tmr3.c: 84:     PIR5bits.TMR3IF = 0;
 [e = . . _PIR5bits 0 4 -> -> 0 `i `uc ]
@@ -2691,8 +2691,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;mcc_generated_files/tmr3.c: 93:     TMR3_SetInterruptHandler(TMR3_DefaultInterruptHandler);
 [e ( _TMR3_SetInterruptHandler (1 &U _TMR3_DefaultInterruptHandler ]
 "96
-[; ;mcc_generated_files/tmr3.c: 96:     T3CON = 0x30;
-[e = _T3CON -> -> 48 `i `uc ]
+[; ;mcc_generated_files/tmr3.c: 96:     T3CON = 0x33;
+[e = _T3CON -> -> 51 `i `uc ]
 "97
 [; ;mcc_generated_files/tmr3.c: 97: }
 [e :UE 2346 ]

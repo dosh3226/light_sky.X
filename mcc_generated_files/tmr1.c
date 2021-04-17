@@ -73,11 +73,11 @@ void TMR1_Initialize(void)
     //CS MFINTOSC_31.25kHz; 
     T1CLK = 0x06;
 
-    //TMR1H 133; 
-    TMR1H = 0x85;
+    //TMR1H 194; 
+    TMR1H = 0xC2;
 
-    //TMR1L 238; 
-    TMR1L = 0xEE;
+    //TMR1L 247; 
+    TMR1L = 0xF7;
 
     // Clearing IF flag.
     PIR3bits.TMR1IF = 0;

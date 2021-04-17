@@ -81,17 +81,17 @@ void UART2_Initialize(void)
     // BRGS high speed; MODE Asynchronous 8-bit mode; RXEN enabled; TXEN enabled; ABDEN disabled; 
     U2CON0 = 0xB0;
 
-    // RXBIMD Set RXBKIF on rising RX input; BRKOVR disabled; WUE disabled; SENDB disabled; ON disabled; 
-    U2CON1 = 0x00;
+    // RXBIMD Set RXBKIF on rising RX input; BRKOVR disabled; WUE disabled; SENDB disabled; ON enabled; 
+    U2CON1 = 0x80;
 
     // TXPOL not inverted; FLO off; RXPOL not inverted; RUNOVF RX input shifter stops all activity; STP Transmit 1Stop bit, receiver verifies first Stop bit; 
     U2CON2 = 0x00;
 
-    // BRGL 160; 
-    U2BRGL = 0xA0;
+    // BRGL 130; 
+    U2BRGL = 0x82;
 
-    // BRGH 1; 
-    U2BRGH = 0x01;
+    // BRGH 6; 
+    U2BRGH = 0x06;
 
     // STPMD in middle of first Stop bit; TXWRE No error; 
     U2FIFO = 0x00;

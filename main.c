@@ -56,75 +56,80 @@
  */
 
 #define LED0        LATFbits.LATF3
+#define CHAIN0      LATAbits.LATA7
 //#define SW0         PORTBbits.RB4
 #define SW0         LATBbits.LATB4
 
+/* from here:
+ * http://www.szledcolor.com/download/WS2813%20LED.pdf
+ */
+
 /* high and low values */
-/* 220-420ns */
-int T0H = 0;
-/* 750ns-1.6us */
-int T1H = 0;
-/* 750ns-1.6us */
-int T0L = 0;
-/* 220-420ns */
-int T1L = 0;
+/* 300ns-450ns so 1 tmr0_delay cycle */
+int T0H = 1;
 
-uint16_t tmr1_delay_1sec = 0xB1E0;
+/* 750ns-1000ns so 3 tmr0_delay cycles */
+int T1H = 3;
 
-void flash_led()
-{    
-    int counter = 0;
-    while (1)
-    {
-        LED0 = 1;
-        TMR1_Reload();
-        while(TMR1_ReadTimer() < tmr1_delay_1sec)
+/* 300ns-100us so 1 tmr0_delay cycle */
+int T0L = 1;
+
+/* 300ns-100us so 1 tmr0_delay cycle */
+int T1L = 1;
+
+/* 300us or more so 1 tmr3 counter cycle */
+int reset_time = 1;
+
+// bit toggling timer
+// current delay: 312.5ns
+void tmr0_delay()
+{
+    TMR0_Initialize();
+    while(1) {
+        if(TMR0_HasOverflowOccured())
         {
-            counter++;
+            return;
         }
-        // Clearing IF flag.
-        PIR3bits.TMR1IF = 0;
-        LED0 = 0;
-        TMR1_Reload();
-        while(TMR1_ReadTimer() < tmr1_delay_1sec)
-        {
-            counter++;
-        }
-        // Clearing IF flag.
-        PIR3bits.TMR1IF = 0;
-        counter++;
     }
 }
-//
-//void send_1()
-//{
-//    LATCbits.LATC3 = 1;
-//    TMR2_Period8BitSet(0xF000);
-//    TMR2_Start();
-//    while(TMR2_HasOverflowOccured() == 0);
-//    LATCbits.LATC3 = 1;
-//    TMR2_Stop();
-//}
 
-void TMR0_Initialize_custom(void)
+// long timer
+// currently 0.5s delay
+void tmr1_delay()
 {
-    // Set TMR0 to the options selected in the User Interface
-
-    // T0CS HFINTOSC; T0CKPS 1:8192; T0ASYNC synchronised; 
-    T0CON1 = 0x6D;
-
-    // TMR0H 121; 
-    TMR0H = 0x3C;
-
-    // TMR0L 0; 
-    TMR0L = 0x79;
-
-    // Clearing IF flag
-    PIR3bits.TMR0IF = 0;
-
-    // T0OUTPS 1:16; T0EN enabled; T016BIT 8-bit; 
-    T0CON0 = 0x8F;
+    TMR1_Initialize();
+    while(1) {
+        if(TMR1_HasOverflowOccured())
+        {
+            return;
+        }
+    }
 }
+
+// reset timer
+// currently 8ms = 8,000us delay
+// so 100 refreshes per second or so
+void tmr3_delay()
+{
+    TMR3_Initialize();
+    while(1) {
+        if(TMR1_HasOverflowOccured())
+        {
+            return;
+        }
+    }
+}
+
+//void ns_375_low()
+//{
+//    CHAIN0=0;
+//    CHAIN0=0;
+//    CHAIN0=0;
+//    CHAIN0=0;
+//    CHAIN0=0;
+//    CHAIN0=0;
+//    return 0;
+//}
 
 void main(void)
 {
@@ -132,10 +137,9 @@ void main(void)
     SYSTEM_Initialize();
     
     /* init slow timer */
-    TMR0_Initialize();
-    TMR1_Initialize();
-    /* init the nanosecond timer */
-    //TMR2_Initialize();
+    //TMR0_Initialize();
+    //TMR1_Initialize();
+   
     // If using interrupts in PIC18 High/Low Priority Mode you need to enable the Global High and Low Interrupts
     // If using interrupts in PIC Mid-Range Compatibility Mode you need to enable the Global Interrupts
     // Use the following macros to:
@@ -147,71 +151,163 @@ void main(void)
     //INTERRUPT_GlobalInterruptDisable();
 
     TRISFbits.TRISF3 = 0;   //LED0 as output
+    TRISAbits.TRISA7 = 0;   //RA7 as output
     TRISBbits.TRISB4 = 1;   //SW0 as input
     LED0 = 1; // LED0 off
+    //IO_RA7_SetHigh();
+    //IO_RF3_SetHigh();
     
-    // string 1
-    //TRISCbits.TRISC3 = 0;
+    int LEDs = 3;
     
-    uint16_t counter = 0;
-//    uint16_t tmr_ctr = 0;
-    //TMR1_StartTimer();
-    while (1)
+    /* RGB for each LED = 3 bytes per LED */
+    uint8_t string[9];
+    string[0] = 255;
+    string[1] = 0;
+    string[2] = 0;
+    
+    string[3] = 0;
+    string[4] = 255;
+    string[5] = 0;
+    
+    string[6] = 0;
+    string[7] = 0;
+    string[8] = 255;
+    
+    /* RGB for each LED = 3 bytes per LED */
+//    CHAIN0=0;
+//    CHAIN0=1;
+//    CHAIN0=0;
+//    CHAIN0=1;
+//    CHAIN0=0;
+//    CHAIN0=0;
+//    CHAIN0=0;
+//    CHAIN0=0;
+//    CHAIN0=0;
+//    CHAIN0=0;
+//    CHAIN0=1;
+//    CHAIN0=1;
+//    CHAIN0=1;
+//    CHAIN0=1;
+//    CHAIN0=1;
+//    CHAIN0=1;
+//    CHAIN0=0;
+//    CHAIN0=0;
+//    CHAIN0=0;
+//    CHAIN0=0;
+//    CHAIN0=0;
+//    CHAIN0=0;
+//    CHAIN0=1;
+//    CHAIN0=1;
+//    CHAIN0=1;
+//    CHAIN0=1;
+//    CHAIN0=1;
+//    CHAIN0=1;
+//    CHAIN0=0;
+//    CHAIN0=0;
+//    CHAIN0=0;
+//    CHAIN0=0;
+//    CHAIN0=0;
+//    CHAIN0=0;
+//    CHAIN0=1;
+//    CHAIN0=1;
+//    CHAIN0=1;
+//    CHAIN0=1;
+//    CHAIN0=1;
+//    CHAIN0=1;
+//    for(int m = 0; m < 11; m++) {CHAIN0=0;}
+//    for(int m = 0; m < 11; m++) {CHAIN0=1;}
+//    CHAIN0=0;
+//    CHAIN0=1;
+//    CHAIN0=0;
+//    CHAIN0=1;
+//    CHAIN0=0;
+//    CHAIN0=1;
+    
+    for(int i = 0; i < 9; i++)
     {
-        // timer 0
-//        for(int i = 0; i < 5; i++)
-//        {
-//            if(TMR0_HasOverflowOccured())
-//            {
-//                LED0=!LED0;
-//                TMR0H = 0x79;
-//                TMR0L = 0x10;
-//                PIR3bits.TMR0IF = 0;
-//            }
-//        }
-//        for(int i = 0; i < 5; i++)
-//        {
-//            if(TMR0_HasOverflowOccured())
-//            {
-//                LED0=!LED0;
-//                TMR0H = 0x10;
-//                TMR0L = 0x79;
-//                PIR3bits.TMR0IF = 0;
-//            }
-//        }
-        
-        // timer 1
-        for(int i = 0; i < 5; i++)
+        /* 8 bits in a byte */
+        for(int j = 0; j < 7; j++)
         {
-            if(TMR1_HasOverflowOccured())
+            /* bit j of byte i of uint8_t string */
+            if(((string[i] & ( 1 << j )) >> j) == 0)
             {
-                LED0=!LED0;
-                //TMR1H 133; 
-                TMR1H = 0x85;
-                //TMR1L 238; 
-                TMR1L = 0xEE;
-                PIR3bits.TMR1IF = 0;
+                // 375ns delay
+                CHAIN0=1;
+                CHAIN0=1;
+                CHAIN0=1;
+                CHAIN0=1;
+                CHAIN0=1;
+                CHAIN0=1;
+
+                // 2x 375ns delay
+                CHAIN0=0;
+                CHAIN0=0;
+                CHAIN0=0;
+                CHAIN0=0;
+                CHAIN0=0;
+                CHAIN0=0;
+                CHAIN0=0;
+                CHAIN0=0;
+                CHAIN0=0;
+                CHAIN0=0;
+                CHAIN0=0;
+                CHAIN0=0;
             }
-        }
-        for(int i = 0; i < 5; i++)
-        {
-            if(TMR1_HasOverflowOccured())
+            else
             {
-                LED0=!LED0;
-                //TMR1H 133; 
-                TMR1H = 0x85;
-                //TMR1L 238; 
-                TMR1L = 0xEE;
-                PIR3bits.TMR1IF = 0;
+                // 2.5 x 375ns delay
+                CHAIN0=1;
+                CHAIN0=1;
+                CHAIN0=1;
+                CHAIN0=1;
+                CHAIN0=1;
+                CHAIN0=1;
+                
+                CHAIN0=1;
+                CHAIN0=1;
+                CHAIN0=1;
+                CHAIN0=1;
+                CHAIN0=1;
+                CHAIN0=1;
+                
+                CHAIN0=1;
+                CHAIN0=1;
+                CHAIN0=1;
+                
+                // 2x 375ns delay
+                CHAIN0=0;
+                CHAIN0=0;
+                CHAIN0=0;
+                CHAIN0=0;
+                CHAIN0=0;
+                CHAIN0=0;
+                CHAIN0=0;
+                CHAIN0=0;
+                CHAIN0=0;
+                CHAIN0=0;
+                CHAIN0=0;
+                CHAIN0=0;
             }
+            
         }
-//        LED0 = 0;
-//        TMR0_Reload(0xFF);
-//        while(PIR3bits.TMR0IF == 0);
-//        LED0 = 1;
-//        TMR0_Reload(0xFF);
-//        while(PIR3bits.TMR0IF == 0);
     }
+
+//    while (1)
+//    {
+        // flash once at the end of the cycle
+        //LED0=!LED0;
+        IO_RF3_SetHigh();
+        IO_RA7_SetHigh();
+        tmr1_delay();
+        IO_RF3_SetLow();
+        IO_RA7_SetLow();
+        //LED0=!LED0;
+        tmr1_delay();
+        IO_RF3_SetHigh();
+        IO_RA7_SetHigh();
+        tmr1_delay();
+//    }
+        while (1) {}
 }
 
 //        LED0 = 0;
